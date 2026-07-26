@@ -1,0 +1,45 @@
+.env
+bin/
+obj/
+.vs/
+
+## ---------- Окружение и компиляция .NET ----------
+# Папки с результатами сборки приложения
+[Bb]in/
+[Oo]bj/
+
+# Файлы пользовательских настроек сборки
+*.user
+*.userosscache
+*.sln.docstates
+*.sln
+
+# Локальные файлы конфигурации
+appsettings.Development.json
+appsettings.Local.json
+
+# Инструмент User Secrets для хранения паролей в ASP.NET Core
+secrets.json
+
+## ---------- Логи и кэш ----------
+*.log
+.eslintcache
+.node_repl_history
+
+## ---------- Операционные системы ----------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## ---------- Пакетные менеджеры ----------
+node_modules/
+jspm_packages/
+pnpm-lock.yaml
+yarn-error.log
+.fake

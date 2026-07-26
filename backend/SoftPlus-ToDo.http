@@ -1,0 +1,6 @@
+@SoftPlus_ToDo_HostAddress = http://localhost:5121
+
+GET {{SoftPlus_ToDo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
