@@ -2,9 +2,16 @@
 
 namespace SoftPlus_ToDo.DTOs.Auth
 {
-    public sealed record RegisterRequestDto(
-        [Required] [MaxLength(25)]                 string Username,
-        [Required] [EmailAddress]                  string Email,
-        [Required] [MinLength(8)] [MaxLength(100)] string Password
-    );
+    public sealed record RegisterRequestDto
+    {
+        [MaxLength(25)]                 
+        public required string Username { get; init; }
+
+        [EmailAddress]                  
+        public required string Email { get; init; }
+
+        [MinLength(8)] 
+        [MaxLength(100)] 
+        public required string Password { get; init;}
+    }
 }

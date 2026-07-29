@@ -6,9 +6,7 @@ namespace SoftPlus_ToDo.Data.Configurations
 {
     public sealed class RefreshTokenModelConfiguration : IEntityTypeConfiguration<RefreshTokenModel>
     {
-        public void Configure(
-            EntityTypeBuilder<RefreshTokenModel> builder
-        )
+        public void Configure(EntityTypeBuilder<RefreshTokenModel> builder)
         {
             builder.HasKey(rt => rt.Id);
 

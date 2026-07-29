@@ -11,6 +11,8 @@ namespace SoftPlus_ToDo.Models
         public DateTimeOffset? UpdatedAtUtc { get; set; }
 
         // Navigation Property
-        public ICollection<RefreshTokenModel> RefreshTokens = [];
+        public ICollection<RefreshTokenModel> RefreshTokens { get; set; } = [];
+        public ICollection<TaskModel> Tasks { get; set; } = [];
+        public ICollection<CategoryModel> Categories { get; set; } = [];
     }
 }

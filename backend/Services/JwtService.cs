@@ -41,7 +41,11 @@ namespace SoftPlus_ToDo.Services
             // Serialize the JWT object into the string returned to the client
             string accessToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new TokenResponseDto(accessToken, GenerateRefreshToken());
+            return new TokenResponseDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = GenerateRefreshToken()  
+            };
         }
 
         public string GenerateRefreshToken() => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
