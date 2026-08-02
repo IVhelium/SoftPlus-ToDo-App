@@ -1,4 +1,4 @@
-using SoftPlus_ToDo.Data.Repositories;
+using SoftPlus_ToDo.Interfaces.Repositories;
 using SoftPlus_ToDo.DTOs.Categories;
 using SoftPlus_ToDo.Extensions.Mappers;
 using SoftPlus_ToDo.Interfaces.Services;
@@ -7,7 +7,7 @@ using SoftPlus_ToDo.Models;
 namespace SoftPlus_ToDo.Services
 {
     public sealed class CategoryService(
-        CategoryRepository _categoryRepository
+        ICategoryRepository _categoryRepository
     ) : ICategoryService
     {
         public async Task<IReadOnlyCollection<CategoryResponseDto>> GetAllAsync(

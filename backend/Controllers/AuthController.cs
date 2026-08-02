@@ -10,7 +10,7 @@ using SoftPlus_ToDo.Extensions;
 namespace SoftPlus_ToDo.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public sealed class AuthController(
         UserManager<AppUsersModel> _userManager,
         SignInManager<AppUsersModel> _signInManager,

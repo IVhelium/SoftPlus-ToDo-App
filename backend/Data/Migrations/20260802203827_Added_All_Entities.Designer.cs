@@ -12,7 +12,7 @@ using SoftPlus_ToDo.Data;
 namespace SoftPlus_ToDo.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260729175748_Added_All_Entities")]
+    [Migration("20260802203827_Added_All_Entities")]
     partial class Added_All_Entities
     {
         /// <inheritdoc />

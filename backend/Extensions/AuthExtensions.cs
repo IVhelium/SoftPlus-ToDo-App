@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -52,6 +53,17 @@ namespace SoftPlus_ToDo.Extensions
                     }
                 };
             });
+        }
+
+        public static Guid GetUserId(
+            this ClaimsPrincipal user
+        )
+        {
+            var userIdValue = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdValue, out var userId)) throw new UnauthorizedAccessException("User identifier or invalid");
+
+            return userId;
         }
     }
 }
