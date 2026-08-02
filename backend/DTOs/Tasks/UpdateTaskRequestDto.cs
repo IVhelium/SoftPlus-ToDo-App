@@ -4,6 +4,7 @@ namespace SoftPlus_ToDo.DTOs.Tasks
 {
     public sealed record UpdateTaskRequestDto
     {
+        [Required]
         [MaxLength(150)]  
         public string? Name { get; init; }
 

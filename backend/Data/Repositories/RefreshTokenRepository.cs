@@ -34,8 +34,6 @@ namespace SoftPlus_ToDo.Data.Repositories
         {
             _dbContext.RefreshTokens.Remove(refreshToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-        }
-
-        
+        }    
     }
 }

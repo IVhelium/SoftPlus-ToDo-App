@@ -32,8 +32,15 @@ builder.Services.AddOptions<JwtOptions>().BindConfiguration(nameof(JwtOptions));
 
 
 #region Dependency Injection
-builder.Services.AddSingleton<IJwtService, JwtService>();
+// Repositories
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+// Services
+builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 #endregion
 
 

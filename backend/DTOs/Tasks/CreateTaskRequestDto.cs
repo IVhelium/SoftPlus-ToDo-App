@@ -4,6 +4,7 @@ namespace SoftPlus_ToDo.DTOs.Tasks
 {
     public sealed record CreateTaskRequestDto
     {
+        [Required]
         [MaxLength(150)] 
         public required string Name { get; init; }
 

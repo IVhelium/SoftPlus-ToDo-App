@@ -4,6 +4,7 @@ namespace SoftPlus_ToDo.DTOs.Tasks
 {
     public sealed record TaskQueryDto
     {
+        [MaxLength(300)]
         public string? Search { get; init; }
         public Guid? CategoryId { get; init; }
         public bool? IsCompleted { get; init; }
