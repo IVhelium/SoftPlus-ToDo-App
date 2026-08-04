@@ -7,7 +7,7 @@ using SoftPlus_ToDo.Services;
 using SoftPlus_ToDo.Extensions;
 using SoftPlus_ToDo.Interfaces.Repositories;
 using SoftPlus_ToDo.Data.Repositories;
-using Microsoft.AspNetCore.Mvc;
+using SoftPlus_ToDo.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,10 @@ builder.Services
     .AddOpenApi()
     .AddAuthorization()
     .AddControllers();
+
+builder.Services
+    .AddProblemDetails()
+    .AddExceptionHandler<GlobalExceptionHandler>();
 
 // Connection String
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -55,6 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 #region Middleware
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

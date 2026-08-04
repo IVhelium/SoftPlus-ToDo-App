@@ -22,7 +22,7 @@ namespace SoftPlus_ToDo.Services
                 .ToArray(); 
         }
 
-        public async Task<CategoryResponseDto?> GetByIdAsync(
+        public async Task<CategoryResponseDto> GetByIdAsync(
             Guid userId, 
             Guid categoryId, 
             CancellationToken cancellationToken
@@ -32,9 +32,7 @@ namespace SoftPlus_ToDo.Services
                 userId,
                 categoryId,
                 cancellationToken
-            );
-
-            if (category is null) return null;
+            ) ?? throw new KeyNotFoundException("Category not found");
 
             return CategoryMapper.MapToResponse(category);
         }
@@ -69,7 +67,7 @@ namespace SoftPlus_ToDo.Services
             return CategoryMapper.MapToResponse(category);
         }
 
-        public async Task<CategoryResponseDto?> UpdateAsync(
+        public async Task<CategoryResponseDto> UpdateAsync(
             Guid userId, 
             Guid categoryId, 
             UpdateCategoryRequestDto request, 
@@ -80,9 +78,7 @@ namespace SoftPlus_ToDo.Services
                 userId,
                 categoryId,
                 cancellationToken
-            );
-
-            if (category is null) return null;
+            ) ?? throw new KeyNotFoundException("Category not found");
 
             if (!string.IsNullOrWhiteSpace(request.Name))
             {

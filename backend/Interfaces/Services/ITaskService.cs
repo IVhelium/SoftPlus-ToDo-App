@@ -11,7 +11,7 @@ namespace SoftPlus_ToDo.Interfaces.Services
             CancellationToken cancellationToken
         );
 
-        Task<TaskResponseDto?> GetByIdAsync(
+        Task<TaskResponseDto> GetByIdAsync(
             Guid userId,
             Guid taskId,
             CancellationToken cancellationToken
@@ -23,14 +23,14 @@ namespace SoftPlus_ToDo.Interfaces.Services
             CancellationToken cancellationToken
         );
 
-        Task<TaskResponseDto?> UpdateAsync(
+        Task<TaskResponseDto> UpdateAsync(
             Guid userId,
             Guid taskId,
             UpdateTaskRequestDto request,
             CancellationToken cancellationToken
         );
 
-        Task<TaskResponseDto?> ChangeStatusAsync(
+        Task<TaskResponseDto> ChangeStatusAsync(
             Guid userId,
             Guid taskId,
             ChangeTaskStatusRequestDto request,

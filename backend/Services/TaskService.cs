@@ -43,7 +43,7 @@ namespace SoftPlus_ToDo.Services
             };
         }
 
-        public async Task<TaskResponseDto?> GetByIdAsync(
+        public async Task<TaskResponseDto> GetByIdAsync(
             Guid userId,
             Guid taskId,
             CancellationToken cancellationToken
@@ -53,9 +53,7 @@ namespace SoftPlus_ToDo.Services
                 userId,
                 taskId,
                 cancellationToken
-            );
-
-            if (task is null) return null;
+            ) ?? throw new KeyNotFoundException("Task not found");
 
             return TaskMapper.MapToResponse(task);
         }
@@ -96,7 +94,7 @@ namespace SoftPlus_ToDo.Services
             return TaskMapper.MapToResponse(task);
         }
 
-        public async Task<TaskResponseDto?> UpdateAsync(
+        public async Task<TaskResponseDto> UpdateAsync(
             Guid userId,
             Guid taskId,
             UpdateTaskRequestDto request,
@@ -107,10 +105,8 @@ namespace SoftPlus_ToDo.Services
                 userId,
                 taskId,
                 cancellationToken
-            );
+            ) ?? throw new KeyNotFoundException("Task not found");
 
-            if (task is null) return null;
-            
             if (!string.IsNullOrWhiteSpace(request.Name)) task.Name = request.Name.Trim();
             if (!string.IsNullOrWhiteSpace(request.Description)) task.Description = request.Description.Trim();
             if (request.DueDateUtc.HasValue) task.DueDateUtc = request.DueDateUtc.Value;
@@ -134,7 +130,7 @@ namespace SoftPlus_ToDo.Services
             return TaskMapper.MapToResponse(task);
         }
 
-        public async Task<TaskResponseDto?> ChangeStatusAsync(
+        public async Task<TaskResponseDto> ChangeStatusAsync(
             Guid userId,
             Guid taskId,
             ChangeTaskStatusRequestDto request,
@@ -145,9 +141,7 @@ namespace SoftPlus_ToDo.Services
                 userId,
                 taskId,
                 cancellationToken
-            );
-
-            if (task is null) return null;
+            ) ?? throw new KeyNotFoundException("Task not found");
 
             task.IsCompleted = request.IsCompleted;
             task.CompletedAtUtc = request.IsCompleted
