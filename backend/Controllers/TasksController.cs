@@ -14,7 +14,7 @@ namespace SoftPlus_ToDo.Controllers
         ITaskService _taskService
     ) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<ActionResult<PaginatedResponseDto<TaskResponseDto>>> GetPaginated(
             [FromQuery] TaskQueryDto query,
             CancellationToken cancellationToken
