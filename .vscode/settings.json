@@ -8,6 +8,11 @@
         "**/obj": true,
         "**/bin": true,
         "**/.vs": true,
-        "**/Migrations/**.Designer.cs": true
+        "**/Migrations/**.Designer.cs": true,
+        "**/.angular": true,
+        "**/node_modules": true,
+        "**/dist": true,
+        "**/.codex": true,
+        "**/AGENTS.md": true
     }
 }

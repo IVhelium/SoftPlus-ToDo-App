@@ -113,7 +113,7 @@ namespace SoftPlus_ToDo.Controllers
             return Ok(task);
         }
 
-        [HttpDelete("/delete/{taskId:guid}")]
+        [HttpDelete("delete/{taskId:guid}")]
         public async Task<IActionResult> Delete(
             Guid taskId,
             CancellationToken cancellationToken

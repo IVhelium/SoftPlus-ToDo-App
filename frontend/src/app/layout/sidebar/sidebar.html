@@ -1,0 +1,110 @@
+<!-- Backdrop -->
+<button 
+    type="button"
+    class="fixed inset-0 top-12 z-30 bg-black/35 transition-opacity duration-300"
+    [class.opacity-100]="isOpen()"
+    [class.opacity-0]="!isOpen()"
+    [class.pointer-events-none]="!isOpen()"
+    (click)="close()"
+></button>
+
+<!-- Sidebar -->
+<aside
+    class="fixed bottom-0 left-0 top-12 z-40 flex w-65 flex-col border-r border-gray-300 bg-white text-black shadow-xl transition-transform duration-300 ease-out"
+    [class.translate-x-0]="isOpen()"
+    [class.-translate-x-full]="!isOpen()"
+>
+    <nav class="flex flex-col min-h-0 flex-1 gap-3 overflow-y-auto">
+        <!-- Tasks -->
+        <section class="p-3">
+            <p class="mb-2 pb-1 pl-1 text-xs font-semibold uppercase tracking-widest text-gray-500 border-b border-b-gray-400">Tasks</p>
+            
+            <!-- All Tasks -->
+            <a 
+                routerLink="/tasks" 
+                routerLinkActive="bg-[#e5efff] text-[#2564cf]" 
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            >
+                <svg 
+                    lucideListTodo 
+                    class="size-5"
+                ></svg>
+                <span class="flex-1">All Tasks</span>
+            </a>
+            
+            <!-- Active Tasks -->
+            <a 
+                routerLink="/tasks" 
+                [queryParams]="{ IsCompleted: false }"
+                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            >
+                <svg 
+                    lucideClock 
+                    class="size-5"
+                ></svg>
+                <span class="flex-1">Active</span>
+            </a>
+
+            <!-- Completed Tasks -->
+            <a 
+                routerLink="/tasks" 
+                [queryParams]="{ IsCompleted: false }"
+                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            >
+                <svg 
+                    lucideCheck
+                    class="size-5"
+                ></svg>
+                <span class="flex-1">Completed</span>
+            </a>
+        </section>
+
+        <!-- Categories -->
+        <section class="px-3">
+            <p class="mb-2 pb-1 pl-1 text-xs font-semibold uppercase tracking-widest text-gray-500 border-b border-b-gray-400">Categories</p>
+            
+            @for (category of categories(); track category.id) {
+                <div class="group flex h-10 items-center rounded-sm transition-colors hover:bg-gray-100">
+                    <a 
+                        routerLink="/tasks" 
+                        [queryParams]="{ categoryId: category.id }"
+                        class="flex min-w-0 flex-1 items-center gap-3 px-3 text-sm" 
+                        (click)="close()"
+                    >
+                        <span 
+                            class="size-2.5 shrink-0 rounded-full" 
+                            [style.backgroundColor]="category.color ?? '#9ca3af'"
+                        ></span>
+                        <span class="min-w-0 flex-1 truncate">{{ category.name }}</span>
+                        <span class="text-xs text-gray-400">{{ category.taskCount }}</span>
+                    </a>
+                
+                    <button 
+                        type="button"
+                        class="mr-1 flex size-7 cursor-pointer items-center justify-center rounded-sm text-gray-400 opacity-0 transition hover:bg-gray-200 hover:text-gray-700 group-hover:opacity-100"
+                    >
+                        <svg lucideEllipsis class="size-4"></svg>
+                    </button>
+                </div>
+            }
+
+            <!-- Create Category -->
+            <button 
+                type="button"
+                class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-sm px-3 text-sm text-[#2564cf] transition-colors hover:bg-gray-100"
+                (click)="openCategoryForm()"
+            >
+                <svg lucidePlus class="size-5"></svg>
+                New Category
+            </button>
+        </section>
+    </nav>
+
+    <!-- User Info -->
+    <div class="flex items-center gap-3 border-b border-gray-400 p-4">
+        <div class="flex shrink-0 items-center justify-center rounded-full text-sm font-semibold">
+
+        </div>
+    </div>
+</aside>

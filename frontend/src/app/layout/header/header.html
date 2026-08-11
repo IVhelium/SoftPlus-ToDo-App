@@ -1,0 +1,66 @@
+<header class="sticky top-0 w-full h-12 grid grid-cols-[auto_minmax(0,10fr)_auto] gap-2 justify-center items-center bg-[#2564cf] overflow-hidden">
+    <div class="flex items-center min-w-0 gap-5 p-3 pl-5 text-white font-semibold">
+        <!-- Menu Button -->
+        <button 
+            type="button"
+            class="flex shrink-0 cursor-pointer rounded-sm transition-colors duration-200 outline-none"
+            (click)="toggleMenu()"
+        >
+            <span class="relative size-6">
+                <svg 
+                    lucideMenu 
+                    class="absolute inset-0 transition-all duration-200"
+                    [class.rotate-90]="isMenuOpen()"
+                    [class.scale-0]="isMenuOpen()"
+                    [class.opacity-0]="isMenuOpen()"
+                ></svg>
+                <svg
+                    lucideX
+                    class="absolute inset-0 transition-all duration-200"
+                    [class.-rotate-90]="!isMenuOpen()"
+                    [class.scale-0]="!isMenuOpen()"
+                ></svg>
+            </span>
+        </button>
+        <a 
+            routerLink="/"
+            class="cursor-pointer"
+        >SoftPlus</a>
+    </div>
+    
+    <!-- Search Bar -->
+    <div class="flex min-w-0 justify-center">
+        <div class="flex h-8 w-full max-w-2xl items-center gap-2 rounded-sm bg-white px-3 text-black shadow-sm">
+            <svg
+                lucideSearch
+                class="size-5.5 mr-2 text-[#2564cf] shrink-0 cursor-pointer"
+            >
+            </svg>
+            <input 
+                type="text"
+                placeholder="Search..." 
+                name="search" 
+                class="min-w-0 flex-1 bg-transparent text-sm text-black placeholder:text-gray-400 outline-none">
+        </div>
+    </div>
+
+    <!-- User Icon -->
+    <div class="flex min-w-0 items-center justify-end pr-4">
+        <button 
+            type="button"
+            class="flex shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/50 bg-[#174ea6] text-white transition-colors duration-200 hover:bg-[#123f8c]"
+        >
+            <svg
+                lucideUser
+                class="size-8"
+            > 
+            </svg>
+        </button>
+    </div>
+</header>
+
+<!-- Sidebar -->
+<app-sidebar
+    [isOpen]="isMenuOpen()"
+    (closed)="closeMenu()"
+/>

@@ -1,0 +1,21 @@
+{
+    "angular.documentSymbols.enabled": true,
+    "angular.documentSymbols.showImplicitForVariables": false,
+
+    "angular.inlayHints.eventParameterTypes": true,
+    "angular.inlayHints.forLoopVariableTypes": true,
+    "angular.inlayHints.ifAliasTypes": "complex",
+    "angular.inlayHints.letDeclarationTypes": true,
+    "angular.inlayHints.referenceVariableTypes": true,
+    "angular.inlayHints.propertyBindingTypes": false,
+    "angular.inlayHints.pipeOutputTypes": false,
+    "angular.inlayHints.twoWayBindingSignalTypes": true,
+    "angular.inlayHints.requiredInputIndicator": "exclamation",
+    "angular.inlayHints.interactiveInlayHints": true,
+
+    "editor.formatOnSave": true,
+    "editor.bracketPairColorization.enabled": true,
+
+    "js/ts.updateImportsOnFileMove.enabled": "always",
+    "js/ts.preferences.importModuleSpecifier": "relative",
+}
