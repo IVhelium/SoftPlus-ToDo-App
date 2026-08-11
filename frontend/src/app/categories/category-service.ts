@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Category, CategoryRequest } from './cotegory';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ export class CategoryService {
         });
     }
 
-    createCategory(request: CategoryRequest) {
+    createCategory(request: CategoryRequest): Observable<Category> {
         return this.httpClient.post<Category>(
             '/api/categories/create',
             request,
@@ -34,7 +35,7 @@ export class CategoryService {
     updateCategory(
         categoryId: string,
         request: CategoryRequest
-    ) {
+    ): Observable<Category> {
         return this.httpClient.patch<Category>(
             `/api/categories/update/${categoryId}`,
             request,
@@ -44,12 +45,12 @@ export class CategoryService {
         );
     }
 
-    deleteCategory(categoryId: string) {
+    deleteCategory(categoryId: string): Observable<void> {
         return this.httpClient.delete<void>(
             `/api/categories/delete/${categoryId}`,
             {
                 withCredentials: true
             }
-        )
+        );
     }
 }

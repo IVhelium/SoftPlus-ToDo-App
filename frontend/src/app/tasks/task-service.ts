@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PaginatedResponse } from '../pagination/pagination';
 import { Task, TaskRequest } from './task';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class TaskService {
         isCompleted: boolean | null,
         page: number,
         pageSize: number
-    ) {
+    ): Observable<PaginatedResponse<Task>> {
         let params = new HttpParams()
             .set('page', page)
             .set('pageSize', pageSize);
@@ -33,7 +34,7 @@ export class TaskService {
         );
     }
 
-    createTask(request: TaskRequest) {
+    createTask(request: TaskRequest): Observable<Task> {
         return this.httpClient.post<Task>(
             '/api/tasks/create',
             request,
@@ -46,7 +47,7 @@ export class TaskService {
     updateTask(
         taskId: string,
         request: TaskRequest
-    ) {
+    ): Observable<Task> {
         return this.httpClient.patch<Task>(
             `/api/tasks/update/${taskId}`,
             request,
@@ -59,7 +60,7 @@ export class TaskService {
     changeStatus(
         taskId: string,
         isCompleted: boolean
-    ) {
+    ): Observable<Task> {
         return this.httpClient.patch<Task>(
             `/api/tasks/update/status/${taskId}`,
             {
@@ -71,7 +72,7 @@ export class TaskService {
         );
     }
 
-    deleteTask(taskId: string) {
+    deleteTask(taskId: string): Observable<void> {
         return this.httpClient.delete<void>(
             `/api/tasks/delete/${taskId}`,
             {
