@@ -1,0 +1,105 @@
+<!-- Backdrop -->
+<button 
+    type="button"
+    class="fixed inset-0 z-60 bg-black/30 transition-opacity duration-300 ease-out"
+    [class.opacity-100]="open()"
+    [class.opacity-0]="!open()"
+    [class.pointer-events-none]="!open()"
+    (click)="close()"
+></button>
+
+<!-- Panel -->
+<aside 
+    class="fixed bottom-0 right-0 top-0 z-70 flex w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ease-out"
+    [class.translate-x-0]="open()"
+    [class.translate-x-full]="!open()"
+    [class.pointer-events-none]="!open()"
+>
+    <div class="flex h-14 items-center justify-between border-b border-gray-200 px-5">
+        <h2 class="text-lg font-semibold">{{ task() ? 'Edit Task' : 'New Task' }}</h2>
+        <button 
+            type="button"
+            class="flex size-8 items-center justify-center rounded-sm hover:bg-gray-100 cursor-pointer"
+            (click)="close()"
+        >
+            <svg
+                lucideX
+                class="size-5"
+            ></svg>
+        </button>
+    </div>
+
+    <form 
+        class="flex min-h-0 flex-1 flex-col"
+        (ngSubmit)="save()"
+    >
+        <div class="flex-1 overflow-y-auto p-5">
+            <!-- Name -->
+            <span class="block text-sm font-medium">
+                Name
+                <input 
+                    type="text" 
+                    name="name"
+                    maxlength="150"
+                    [(ngModel)]="name"
+                    class="mt-2 h-10 w-full rounded-sm border border-gray-300 px-3 outline-none focus:border-[#2564cf]"
+                >
+            </span>
+
+            <!-- Description -->
+            <span class="mt-5 block text-sm font-medium">
+                Description
+                <textarea
+                    name="description"
+                    rows="6"
+                    maxlength="3000" 
+                    [(ngModel)]="description"
+                    class="mt-2 h-30 w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-[#2564cf] resize-none"
+                ></textarea>
+            </span>
+
+            <!-- Category -->
+            <span class="mt-5 block text-sm font-medium">
+                Category
+                <select 
+                    name="category"
+                    [(ngModel)]="categoryId"
+                    class="mt-2 h-10 w-full rounded-sm border border-gray-300 px-3 outline-none focus:border-[#2564cf]"
+                >
+                    <option value="">No Category</option>
+
+                    @for (category of categoryService.categories(); track category.id) {
+                        <option [value]="category.id">{{ category.name }}</option>
+                    }
+                </select>
+            </span>
+
+            <!-- Due Date -->
+            <span class="mt-5 block text-sm font-medium">
+                Due Date
+                <input 
+                    type="date" 
+                    name="dueDate"
+                    [(ngModel)]="dueDate"
+                    class="mt-2 h-10 w-full rounded-sm border border-gray-300 px-3 outline-none focus:border-[#2564cf]">
+            </span>
+        </div>
+
+        <div class="flex justify-end gap-2 border-t border-gray-200 p-4">
+            <button 
+                type="button"
+                class="h-9 rounded-sm px-4 text-sm hover:bg-gray-100"
+                (click)="close()"
+            >
+                Cancel
+            </button>
+
+            <button 
+                type="submit"
+                class="h-9 rounded-sm bg-[#2564cf] px-4 text-sm font-medium text-white hover:bg-[#1f55ad]"
+            >
+                {{ task() ? 'Save' : 'Create' }}
+            </button>
+        </div>
+    </form>
+</aside>

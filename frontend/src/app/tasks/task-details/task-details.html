@@ -1,0 +1,185 @@
+<!-- Backdrop -->
+<button 
+    type="button"
+    class="fixed inset-0 top-12 z-55 bg-black/20 transition-opacity duration-300 lg:hidden"
+    [class.opacity-100]="open()"
+    [class.opacity-0]="!open()"
+    [class.pointer-events-none]="!open()"
+    (click)="close()"
+></button>
+
+<!-- Details Panel -->
+<aside
+    class="fixed bottom-0 right-0 top-12 z-60 flex w-full max-w-md flex-col border-l border-gray-200 bg-white shadow-2xl transition-transform duration-300 ease-out"
+    [class.translate-x-0]="open()"
+    [class.translate-x-full]="!open()"
+    [class.pointer-events-none]="!open()"
+>
+    @if (task()) {
+        <div class="flex h-14 shrink-0 items-center justify-between border-b border-gray-200 px-5">
+            <h2 class="truncate text-lg font-semibold">Task details</h2>
+            <button 
+                type="button"
+                class="flex size-8 items-center justify-center rounded-sm text-gray-500 transition-colors hover:bg-gray-100"
+                (click)="close()"
+            >
+                <svg
+                    lucideX
+                    class="size-5 transition-transform duration-200 hover:rotate-90"
+                ></svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="min-h-0 flex-1 overflow-y-auto p-5">
+            <div class="flex items-start gap-3">
+                <button 
+                    type="button"
+                    class="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-[#2564cf] transition-colors"
+                    [class.bg-[#2564cf]]="task()!.isCompleted"
+                    (click)="statusChanged.emit()"
+                >
+                    @if (task()!.isCompleted) {
+                        <svg
+                            lucideCheck
+                            class="size-3 text-white"
+                        ></svg>
+                    }
+                </button>
+
+                <div class="min-w-0">
+                    <!-- Name -->
+                    <h3
+                        class="wrap-break-word text-xl font-semibold"
+                        [class.line-through]="task()!.isCompleted"
+                        [class.text-gray-400]="task()!.isCompleted"
+                    >
+                        {{ task()!.name }}
+                    </h3>
+
+                    <!-- Status -->
+                    <p class="mt-1 text-sm text-gray-500">
+                        {{ task()!.isCompleted ? 'Completed' : 'Active' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mt-8">
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Description
+                </p>
+
+                @if (task()!.description) {
+                    <p class="whitespace-pre-wrap text-sm leading-6 text-gray-700">
+                        {{ task()!.description }}
+                    </p>
+                }
+                @else {
+                    <p class="text-sm text-gray-400">
+                        No Description
+                    </p>
+                }
+            </div>
+
+            <div class="border-t border-gray-200 mt-2"></div>
+
+            <!-- Category -->
+            <div class="mt-6 flex items-center gap-3">
+                <svg
+                    lucideTag
+                    class="size-5 text-gray-400"
+                ></svg>
+
+                <div>
+                    <p class="text-xs text-gray-500">Category</p>
+
+                    @if (task()!.categoryName) {
+                        <div class="mt-1 flex items-center gap-2">
+                            <span
+                                class="size-2.5 rounded-full"
+                                [style.backgroundColor]="task()!.categoryColor ?? '#9ca3af'"
+                            ></span>
+
+                            <span class="text-sm font-medium">
+                                {{ task()!.categoryName }}
+                            </span>
+                        </div>
+                    }
+                    @else {
+                        <p class="mt-1 text-sm text-gray-400">No Category</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mt-5 flex items-center gap-3">
+                <svg
+                    lucideCalendarDays
+                    class="size-5 text-gray-400"
+                ></svg>
+
+                <div>
+                    <p class="text-xs text-gray-500">Due Date</p>
+                    <p class="mt-1 text-sm font-medium">
+                        @if (task()!.dueDateUtc) {
+                            {{ task()!.dueDateUtc | date:'MMM d, y' }}
+                        }
+                        @else {
+                            <span class="text-gray-400">No Due Date</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <!-- Created -->
+            <div class="mt-5 flex items-center gap-3">
+                <svg
+                    lucideClock3
+                    class="size-5 text-gray-400"
+                ></svg>
+
+                <div>
+                    <p class="text-xs text-gray-500">Created</p>
+                    <p class="mt-1 text-sm">{{ task()!.createdAtUtc | date:'MMM d, y, HH:mm'}}</p>
+                </div>
+            </div>
+
+            <!-- Updated -->
+            @if (task()!.updatedAtUtc) {
+                <div class="mt-5 flex items-center gap-3">
+                    <svg 
+                        lucideClock3 
+                        class="size-5 text-gray-400"
+                    ></svg>
+
+                    <div>
+                        <p class="text-xs text-gray-500">Updated</p>
+                        <p class="mt-1 text-sm">{{ task()!.updatedAtUtc | date:'MMM d, y, HH:mm'}}</p>
+                    </div>
+                </div>
+            }
+        </div>
+        
+
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center justify-between border-t border-gray-200 p-4">
+            <button 
+                type="button"
+                class="flex h-9 items-center gap-2 rounded-sm px-3 text-sm text-red-600 transition-colors hover:bg-red-50"
+                (click)="remove.emit()"
+            >
+                <svg lucideTrash2 class="size-4"></svg>
+                Delete
+            </button>
+        
+            <button 
+                type="button"
+                class="flex h-9 items-center gap-2 rounded-sm bg-[#2564cf] px-4 text-sm text-white transition-colors hover:bg-[#1f55ad]"
+                (click)="edit.emit()"
+            >
+                Edit
+            </button>
+        </div>
+    }
+</aside>

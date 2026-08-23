@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
 import { Category, CategoryRequest } from './cotegory';
 import { Observable } from 'rxjs';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Service()
 export class CategoryService {
     private readonly httpClient = inject(HttpClient);
 
@@ -14,11 +12,12 @@ export class CategoryService {
     getCategories(): void {
         this.httpClient.get<Category[]>(
             '/api/categories/get',
-            {
-                withCredentials: true
-            }
-        ).subscribe(categories => {
-            this.categories.set(categories)
+        ).subscribe({
+            next: categories => {
+                this.categories.set(categories)
+            },
+
+            error: () => {}
         });
     }
 
@@ -26,9 +25,6 @@ export class CategoryService {
         return this.httpClient.post<Category>(
             '/api/categories/create',
             request,
-            {
-                withCredentials: true
-            }
         );
     }
 
@@ -39,18 +35,12 @@ export class CategoryService {
         return this.httpClient.patch<Category>(
             `/api/categories/update/${categoryId}`,
             request,
-            {
-                withCredentials: true
-            }
         );
     }
 
     deleteCategory(categoryId: string): Observable<void> {
         return this.httpClient.delete<void>(
             `/api/categories/delete/${categoryId}`,
-            {
-                withCredentials: true
-            }
         );
     }
 }

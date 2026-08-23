@@ -1,12 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { PaginatedResponse } from '../pagination/pagination';
 import { Task, TaskRequest } from './task';
 import { Observable } from 'rxjs';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Service()
 export class TaskService {
     private readonly httpClient = inject(HttpClient);
 
@@ -29,7 +27,6 @@ export class TaskService {
             '/api/tasks/get',
             {
                 params,
-                withCredentials: true
             }
         );
     }
@@ -38,9 +35,6 @@ export class TaskService {
         return this.httpClient.post<Task>(
             '/api/tasks/create',
             request,
-            {
-                withCredentials: true
-            }
         );
     }
 
@@ -51,9 +45,6 @@ export class TaskService {
         return this.httpClient.patch<Task>(
             `/api/tasks/update/${taskId}`,
             request,
-            {
-                withCredentials: true
-            }
         );
     }
 
@@ -66,18 +57,12 @@ export class TaskService {
             {
                 isCompleted
             },
-            {
-                withCredentials: true
-            }
         );
     }
 
     deleteTask(taskId: string): Observable<void> {
         return this.httpClient.delete<void>(
             `/api/tasks/delete/${taskId}`,
-            {
-                withCredentials: true
-            }
         );
     }
 }

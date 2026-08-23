@@ -10,7 +10,7 @@
 
 <!-- Sidebar -->
 <aside
-    class="fixed bottom-0 left-0 top-12 z-40 flex w-65 flex-col border-r border-gray-300 bg-white text-black shadow-xl transition-transform duration-300 ease-out"
+    class="fixed bottom-0 left-0 top-12 z-40 flex w-65 flex-col border-r border-gray-300 bg-white text-black shadow-xl transition-transform duration-300 ease-out lg:translate-x-0 lg:shadow-none"
     [class.translate-x-0]="isOpen()"
     [class.-translate-x-full]="!isOpen()"
 >
@@ -20,57 +20,78 @@
             <p class="mb-2 pb-1 pl-1 text-xs font-semibold uppercase tracking-widest text-gray-500 border-b border-b-gray-400">Tasks</p>
             
             <!-- All Tasks -->
-            <a 
-                routerLink="/tasks" 
-                routerLinkActive="bg-[#e5efff] text-[#2564cf]" 
-                [routerLinkActiveOptions]="{ exact: true }"
-                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            <button 
+                type="button"
+                class="flex w-full h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100 cursor-pointer"
+                [class.bg-[#e5efff]]="filterService.isAllTasks()"
+                [class.text-[#2564cf]]="filterService.isAllTasks()"
+                (click)="showAll()"
             >
                 <svg 
                     lucideListTodo 
                     class="size-5"
                 ></svg>
-                <span class="flex-1">All Tasks</span>
-            </a>
+                <span>All Tasks</span>
+            </button>
             
             <!-- Active Tasks -->
-            <a 
-                routerLink="/tasks" 
-                [queryParams]="{ IsCompleted: false }"
-                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            <button 
+                type="button"
+                class="flex w-full h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100 cursor-pointer" 
+                [class.bg-[#e5efff]]="filterService.isCompleted() === false"
+                [class.text-[#2564cf]]="filterService.isCompleted() === false"
+                (click)="showActive()"
             >
                 <svg 
                     lucideClock 
                     class="size-5"
                 ></svg>
-                <span class="flex-1">Active</span>
-            </a>
+                <span>Active</span>
+            </button>
 
             <!-- Completed Tasks -->
-            <a 
-                routerLink="/tasks" 
-                [queryParams]="{ IsCompleted: false }"
-                class="flex h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100" (click)="close()"
+            <button 
+                type="button"
+                class="flex w-full h-10 items-center gap-3 rounded-sm px-3 text-sm transition-colors hover:bg-gray-100 cursor-pointer" 
+                [class.bg-[#e5efff]]="filterService.isCompleted() === true"
+                [class.text-[#2564cf]]="filterService.isCompleted() === true"
+                (click)="showCompleted()"
             >
                 <svg 
                     lucideCheck
                     class="size-5"
                 ></svg>
-                <span class="flex-1">Completed</span>
-            </a>
+                <span>Completed</span>
+            </button>
         </section>
 
         <!-- Categories -->
         <section class="px-3">
             <p class="mb-2 pb-1 pl-1 text-xs font-semibold uppercase tracking-widest text-gray-500 border-b border-b-gray-400">Categories</p>
             
-            @for (category of categories(); track category.id) {
-                <div class="group flex h-10 items-center rounded-sm transition-colors hover:bg-gray-100">
-                    <a 
-                        routerLink="/tasks" 
-                        [queryParams]="{ categoryId: category.id }"
+            <!-- Create Category -->
+            <button 
+                type="button"
+                class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-sm px-3 text-sm text-[#2564cf] transition-colors hover:bg-gray-100"
+                (click)="openCreateCategory()"
+            >
+                <svg 
+                    lucidePlus 
+                    class="size-5"
+                ></svg>
+                New Category
+            </button>
+
+            @for (category of categoryService.categories(); track category.id) {
+                <div 
+                    class="group flex h-10 items-center rounded-sm transition-colors hover:bg-gray-100"
+                    [class.bg-[#e5efff]]="filterService.categoryId() === category.id"
+                    [class.text-[#2564cf]]="filterService.categoryId() === category.id"
+                >
+                    <button
+                        type="button" 
                         class="flex min-w-0 flex-1 items-center gap-3 px-3 text-sm" 
-                        (click)="close()"
+                        (click)="selectCategory(category.id)"
                     >
                         <span 
                             class="size-2.5 shrink-0 rounded-full" 
@@ -78,26 +99,47 @@
                         ></span>
                         <span class="min-w-0 flex-1 truncate">{{ category.name }}</span>
                         <span class="text-xs text-gray-400">{{ category.taskCount }}</span>
-                    </a>
+                    </button>
                 
                     <button 
                         type="button"
                         class="mr-1 flex size-7 cursor-pointer items-center justify-center rounded-sm text-gray-400 opacity-0 transition hover:bg-gray-200 hover:text-gray-700 group-hover:opacity-100"
+                        (click)="toggleCategoryMenu(category.id)"
                     >
                         <svg lucideEllipsis class="size-4"></svg>
                     </button>
+
+                    @if (openedCategoryMenu() === category.id) {
+                        <div class="absolute right-1 top-9 z-50 w-32 overflow-hidden rounded-md border border-gray-200 bg-white text-[#242424] shadow-lg">
+                            <button 
+                                type="button"
+                                class="flex h-9 w-full items-center gap-2 px-3 text-sm hover:bg-gray-100"
+                                (click)="openEditCategory(category)"
+                            >
+                                <svg
+                                    lucidePencil
+                                    class="size-4"
+                                ></svg>
+                                Edit
+                            </button>
+
+                            <button 
+                                type="button"
+                                class="flex h-9 w-full items-center gap-2 px-3 text-sm text-red-600 hover:bg-red-50"
+                                (click)="deleteCategory(category)"
+                            >
+                                <svg
+                                    lucideTrash2
+                                    class="size-4"
+                                ></svg>
+                                Delete
+                            </button>
+                        </div>
+                    }
                 </div>
             }
 
-            <!-- Create Category -->
-            <button 
-                type="button"
-                class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-sm px-3 text-sm text-[#2564cf] transition-colors hover:bg-gray-100"
-                (click)="openCategoryForm()"
-            >
-                <svg lucidePlus class="size-5"></svg>
-                New Category
-            </button>
+            
         </section>
     </nav>
 
@@ -108,3 +150,10 @@
         </div>
     </div>
 </aside>
+
+<app-category-form
+    [open]="isCategoryFormOpen()"
+    [category]="editingCategory()"
+    (saved)="saveCategory($event)"
+    (closed)="closeCategoryForm()"
+/>

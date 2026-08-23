@@ -14,7 +14,8 @@ namespace SoftPlus_ToDo.Extensions
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(60)
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                Path = "/"
             });
 
             response.Cookies.Append("X-Refresh-Token", token.RefreshToken, new CookieOptions
@@ -22,7 +23,8 @@ namespace SoftPlus_ToDo.Extensions
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddDays(60)
+                Expires = DateTime.UtcNow.AddDays(60),
+                Path = "/"
             });
         }
 
@@ -30,8 +32,15 @@ namespace SoftPlus_ToDo.Extensions
             this HttpResponse response
         )
         {
-            response.Cookies.Delete("X-Access-Token");
-            response.Cookies.Delete("X-Refresh-Token");
+            response.Cookies.Delete("X-Access-Token", new CookieOptions
+            {
+                Path = "/"
+            });
+
+            response.Cookies.Delete("X-Refresh-Token", new CookieOptions
+            {
+                Path = "/"
+            });
         }
     }
 }

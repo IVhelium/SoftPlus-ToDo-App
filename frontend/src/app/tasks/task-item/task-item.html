@@ -1,0 +1,77 @@
+<article class="group flex min-h-20 items-center gap-3 border-b border-gray-100 px-4 transition-colors last:border-b-0 hover:bg-[#fafafa]">
+    <!-- Status -->
+    <button 
+        type="button"
+        class="flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-[#2564cf] transition-colors cursor-pointer"
+        [class.bg-[#2564cf]]="task().isCompleted"
+        (click)="statusChanged.emit()"
+    >
+        @if (task().isCompleted) {
+            <svg
+                lucideCheck
+                class="size-3 text-white"
+            ></svg>
+        }
+    </button>
+
+    <!-- Content -->
+    <button
+        type="button" 
+        class="min-w-0 flex items-center flex-1 cursor-pointer py-3 text-left gap-5"
+        (click)="opened.emit()"
+    >
+        <p 
+            class="truncate text-sm font-medium"
+            [class.line-through]="task().isCompleted"
+            [class.text-gray-400]="task().isCompleted"
+        >{{ task().name }}</p>
+
+        <div class="flex items-center gap-3 text-xs text-gray-500">
+            <!-- Category -->
+            @if (task().categoryName) {
+                <span class="flex items-center gap-1.5">
+                    <span
+                        class="size-2"
+                        [style.backgroundColor]="task().categoryColor ?? '#9ca3af'"
+                    ></span>
+                    {{ task().categoryName }}
+                </span>
+            }
+
+            <!-- Due Date -->
+            @if (task().dueDateUtc) {
+                <span class="flex items-center gap-1">
+                    <svg
+                        lucideCalendarDays
+                        class="size-3.5"
+                    ></svg>
+                    {{ task().dueDateUtc | date: 'MMM d, y' }}
+                </span>
+            }
+        </div>
+    </button>
+
+    <!-- Edit -->
+    <button 
+        type="button"
+        class="flex size-8 items-center justify-center rounded-sm text-gray-400 transition hover:bg-gray-100 hover:text-[#2564cf]"
+        (click)="edit.emit()"
+    >
+        <svg
+            lucidePencil
+            class="size-4"
+        ></svg>
+    </button>
+
+    <!-- Delete -->
+    <button 
+        type="button"
+        class="flex size-8 items-center justify-center rounded-sm text-gray-400 transition hover:bg-red-50 hover:text-red-600"
+        (click)="remove.emit()"
+    >
+        <svg 
+            lucideTrash2
+            class="size-4"
+        ></svg>
+    </button>
+</article>

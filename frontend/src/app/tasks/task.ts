@@ -3,10 +3,14 @@ export interface Task {
     name: string,
     description: string | null,
     isCompleted: boolean,
+    completedAtUtc: string | null
     dueDateUtc: string | null,
 
+    createdAtUtc: string,
+    updatedAtUtc: string | null,
+
     categoryId: string | null,
-    categroyName: string | null,
+    categoryName: string | null,
     categoryColor: string | null
 }
 
