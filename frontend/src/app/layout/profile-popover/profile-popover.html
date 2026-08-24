@@ -3,16 +3,48 @@
     popover
     class="absolute z-50 m-0 inset-auto right-4 top-11 w-40 overflow-hidden rounded-sm border border-gray-200 bg-white text-[#242424] shadow-xl"
 >
-    <span></span>
-    <button 
-        type="button"
-        class="flex h-10 w-full items-center gap-3 px-4 cursor-pointer text-sm transition-colors hover:bg-gray-100"
-        (click)="logout()"
-    >
-        <svg 
-            lucideLogOut
-            class="size-4"
-        ></svg>
-        Logout
-    </button>
+    <!-- Loading User -->
+    @if (!authService.authChecked()) {
+        <div class="px-4 py-3 text-sm text-gray-400">Loading...</div>
+    }
+    <!-- Logged In -->
+    @else if (authService.currentUser(); as user) {
+        <div class="border-b border-gray-100 px-4 py-3">
+            <p class="mt-0.5 truncate text-sm font-semibold">{{ user.username }}</p>
+        </div>
+
+        <!-- Logout -->
+        <button 
+            type="button"
+            class="flex h-10 w-full items-center gap-3 px-4 cursor-pointer text-sm transition-colors hover:bg-gray-100"
+            (click)="logout()"
+        >
+            <svg lucideLogOut class="size-4"></svg>
+            Logout
+        </button>
+    }
+    <!-- Not Logged In -->
+    @else {
+        <a
+            routerLink="/login"
+            class="flex h-10 w-full items-center gap-3 px-4 text-sm transition-colors hover:bg-gray-100"
+        >
+            <svg
+                lucideLogIn
+                class="size-4"
+            ></svg>
+            Login
+        </a>
+
+        <a 
+            routerLink="/login" 
+            class="flex h-10 w-full items-center gap-3 px-4 text-sm transition-colors hover:bg-gray-100"
+        >
+            <svg
+                lucideUserPlus
+                class="size-4"
+            ></svg>
+            Register
+        </a>
+    }
 </div>

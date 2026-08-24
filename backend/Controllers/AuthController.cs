@@ -6,6 +6,7 @@ using SoftPlus_ToDo.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using SoftPlus_ToDo.Interfaces.Repositories;
 using SoftPlus_ToDo.Extensions;
+using System.Security.Claims;
 
 namespace SoftPlus_ToDo.Controllers
 {
@@ -47,7 +48,12 @@ namespace SoftPlus_ToDo.Controllers
             await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
 
             Response.AppendAuthCookies(tokenResponse);
-            return Ok(new { message = "Registration was successful", userId = user.Id });
+            return Ok(new AuthUserResponseDto
+            {
+                Id = user.Id,
+                Username = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty
+            });
         }
 
         [HttpPost("login")]
@@ -73,7 +79,12 @@ namespace SoftPlus_ToDo.Controllers
             await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
 
             Response.AppendAuthCookies(tokenResponse);
-            return Ok();
+            return Ok(new AuthUserResponseDto
+            {
+                Id = user.Id,
+                Username = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty
+            });
         }
 
         [Authorize]
@@ -90,6 +101,20 @@ namespace SoftPlus_ToDo.Controllers
 
             Response.ClearAuthCookies();
             return Ok(new { message = "Logged out successfully" });
+        }
+
+        [HttpGet("me")]
+        public ActionResult<AuthUserResponseDto?> Me()
+        {
+            if (User.Identity?.IsAuthenticated != true)
+                return Ok(null);
+
+            return Ok(new AuthUserResponseDto
+            {
+                Id = User.GetUserId(),
+                Username = User.Identity.Name ?? string.Empty,
+                Email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty
+            });
         }
 
         [HttpPost("refresh")]
@@ -122,7 +147,12 @@ namespace SoftPlus_ToDo.Controllers
             await _refreshTokenRepository.AddAsync(newSession, cancellationToken);
 
             Response.AppendAuthCookies(tokenResponse);
-            return Ok(new { message = "Session refreshed successfully" });
+            return Ok(new AuthUserResponseDto
+            {
+                Id = session.User.Id,
+                Username = session.User.UserName ?? string.Empty,
+                Email = session.User.Email ?? string.Empty
+            });
         }
     }
 }

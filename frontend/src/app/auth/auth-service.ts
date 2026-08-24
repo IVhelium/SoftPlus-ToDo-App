@@ -1,37 +1,73 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
-import { LoginRequest, LogoutResponse, RegisterRequest, RegisterResponse } from './auth';
-import { finalize, map, Observable, shareReplay } from 'rxjs';
+import { inject, Service, signal } from '@angular/core';
+import { AuthUser, LoginRequest, LogoutResponse, RegisterRequest } from './auth';
+import { finalize, map, Observable, shareReplay, tap } from 'rxjs';
+import ta from '@angular/common/locales/ta';
 
 @Service()
 export class AuthService {
     private readonly httpClient = inject(HttpClient);
 
-    private refreshRequest: Observable<void> | null = null;
+    readonly currentUser = signal<AuthUser | null>(null);
+    readonly authChecked = signal(false);
 
-    login(request: LoginRequest): Observable<void> {
-        return this.httpClient.post<void>(
+    private refreshRequest: Observable<AuthUser> | null = null;
+
+    loadCurrentUser(): void {
+        if (this.authChecked()) return;
+
+        this.httpClient.get<AuthUser | null>(
+            '/api/auth/me',
+        ).pipe(
+            finalize(() => {
+                this.authChecked.set(true);
+            })
+        ).subscribe({
+            next: user => {
+                this.currentUser.set(user);
+            },
+            error: () => {
+                this.currentUser.set(null);
+            }
+        })
+    }
+
+    login(request: LoginRequest): Observable<AuthUser> {
+        return this.httpClient.post<AuthUser>(
             '/api/auth/login',
             request,
+        ).pipe(
+            tap(user => {
+                this.currentUser.set(user);
+                this.authChecked.set(true);
+            })
         );
     }
 
-    register(request: RegisterRequest): Observable<RegisterResponse> {
-        return this.httpClient.post<RegisterResponse>(
+    register(request: RegisterRequest): Observable<AuthUser> {
+        return this.httpClient.post<AuthUser>(
             '/api/auth/register',
             request,
+        ).pipe(
+            tap(user => {
+                this.currentUser.set(user);
+                this.authChecked.set(true);
+            })
         );
     }
 
-    refresh(): Observable<void> {
-        if (this.refreshRequest) 
+    refresh(): Observable<AuthUser> {
+        if (this.refreshRequest)
             return this.refreshRequest; // If Refresh is already running, the same request is used
 
-        this.refreshRequest = this.httpClient.post(
+        this.refreshRequest = this.httpClient.post<AuthUser>(
             '/api/auth/refresh',
             {}
         ).pipe(
-            map(() => undefined), // return Observable<void>
+            tap(user => {
+                this.currentUser.set(user);
+                this.authChecked.set(true);
+            }),
             finalize(() => {
                 this.refreshRequest = null
             }),
@@ -48,6 +84,11 @@ export class AuthService {
         return this.httpClient.post<LogoutResponse>(
             '/api/auth/logout',
             {},
+        ).pipe(
+            tap(() => {
+                this.currentUser.set(null);
+                this.authChecked.set(true);
+            })
         );
     }
 }
