@@ -1,5 +1,5 @@
 import { Service, signal } from '@angular/core';
-import { ToastMessage, ToastType } from './toast';
+import { ToastMessage} from './toast';
 
 @Service()
 export class ToastService {
@@ -8,15 +8,11 @@ export class ToastService {
 
     readonly toasts = signal<ToastMessage[]>([]);
 
-    private show(
-        message: string,
-        type: ToastType
-    ): void {
+    private show(message: string): void {
         const id = ++this.toastId;
         const toast: ToastMessage = {
             id,
             message,
-            type,
             visible: false
         }
 
@@ -53,14 +49,6 @@ export class ToastService {
     }
 
     error(message: string): void {
-        this.show(message, 'error');
-    }
-
-    success(message: string): void {
-        this.show(message, 'success');
-    }
-
-    info(message: string): void {
-        this.show(message, 'info');
+        this.show(message);
     }
 }

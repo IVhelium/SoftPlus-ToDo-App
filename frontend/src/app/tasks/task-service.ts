@@ -51,8 +51,8 @@ export class TaskService {
     changeStatus(
         taskId: string,
         isCompleted: boolean
-    ): Observable<Task> {
-        return this.httpClient.patch<Task>(
+    ): Observable<void> {
+        return this.httpClient.patch<void>(
             `/api/tasks/update/status/${taskId}`,
             {
                 isCompleted

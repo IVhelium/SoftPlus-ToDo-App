@@ -41,7 +41,7 @@ export class TaskForm implements OnChanges {
       name: this.name.trim(),
       description: this.description.trim() || null,
       categoryId: this.categoryId || null,
-      dueDateUtc: this.dueDate ? `${this.dueDate}T00:00:00.000Z` : null
+      dueDateUtc: this.dueDate ? new Date(this.dueDate).toISOString() : null
     });
   }
 

@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ToastService } from '../toast-service';
-import { LucideCircleAlert, LucideCircleCheck, LucideInfo, LucideX } from "@lucide/angular";
+import { LucideCircleAlert, LucideX } from "@lucide/angular";
 
 @Component({
   selector: 'app-toast-item',
-  imports: [LucideCircleAlert, LucideCircleCheck, LucideInfo, LucideX],
+  imports: [LucideCircleAlert, LucideX],
   templateUrl: './toast-item.html',
 })
 export class ToastItem {

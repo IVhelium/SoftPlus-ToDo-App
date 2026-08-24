@@ -102,11 +102,45 @@ namespace SoftPlus_ToDo.Data.Repositories
             await _dbContext.Tasks.AddAsync(task, cancellationToken);
         }
 
-        public void Delete(
-            TaskModel task
+        public async Task<bool> ChangeStatusAsync(
+            Guid userId,
+            Guid taskId,
+            bool isCompleted,
+            CancellationToken cancellationToken
         )
         {
-            _dbContext.Tasks.Remove(task);
+            var now = DateTimeOffset.UtcNow;
+
+            var updated = await _dbContext.Tasks
+                .Where(task => 
+                    task.UserId == userId && 
+                    task.Id == taskId
+                )
+                .ExecuteUpdateAsync(setters =>
+                    setters
+                        .SetProperty(task => task.IsCompleted, isCompleted)
+                        .SetProperty(task => task.CompletedAtUtc, isCompleted ? now : null)
+                        .SetProperty(task => task.UpdatedAtUtc, now),
+                    cancellationToken
+                );
+
+            return updated > 0;
+        }
+
+        public async Task<bool> DeleteAsync(
+            Guid userId,
+            Guid taskId,
+            CancellationToken cancellationToken
+        )
+        {
+            var deleted = await _dbContext.Tasks
+                .Where(task =>
+                    task.UserId == userId &&
+                    task.Id == taskId
+                )
+                .ExecuteDeleteAsync(cancellationToken);
+
+            return deleted > 0;
         }
 
         public async Task SaveChangesAsync(

@@ -1,40 +1,20 @@
 <span class="pointer-events-none fixed right-4 top-16 z-100 flex w-full max-w-sm flex-col gap-2">
     @for (toast of toastService.toasts(); track toast.id) {
         <div 
-            class="pointer-events-auto flex items-start gap-3 rounded-md border bg-white p-4 shadow-lg transition-all duration-300 ease-out"
+            class="pointer-events-auto flex items-start gap-3 rounded-md border border-red-200 bg-white p-4 shadow-lg transition-all duration-300 ease-out"
             [class.translate-x-0]="toast.visible"
             [class.opacity-100]="toast.visible"
             [class.translate-x-8]="!toast.visible"
-            [class.border-red-200]="toast.type === 'error'"
-            [class.border-green-200]="toast.type === 'success'"
-            [class.border-blue-200]="toast.type === 'info'"
         >
-            <!-- Error -->
-            @if (toast.type === 'error') {
-                <svg
-                    lucideCircleAlert
-                    class="mt-0.5 size-5 shrink-0 text-red-500"
-                ></svg>
-            }
-            <!-- Success -->
-            @else if (toast.type === 'success') {
-                <svg
-                    lucideCircleCheck
-                    class="mt-0.5 size-5 shrink-0 text-green-500"
-                ></svg>
-            }
-            <!-- Info -->
-            @else {
-                <svg
-                    lucideInfo
-                    class="mt-0.5 size-5 shrink-0 text-blue-500"
-                ></svg>
-            }
+            <svg
+                lucideCircleAlert
+                class="mt-0.5 size-5 shrink-0 text-red-500"
+            ></svg>
 
             <p class="min-w-0 flex-1 text-sm text-gray-700">{{ toast.message }}</p>
             <button 
                 type="button"
-                class="felx size-7 shrink-0 items-center justify-center rounded-sm text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+                class="flex size-7 shrink-0 items-center justify-center rounded-sm text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
                 (click)="toastService.hide(toast.id)"
             >
                 <svg

@@ -146,13 +146,25 @@ export class TasksPage {
   }
 
   protected changeStatus(task: Task): void {
+    const isCompleted = !task.isCompleted;
+
     this.taskService.changeStatus(
       task.id,
-      !task.isCompleted
+      isCompleted
     ).subscribe({
-      next: updatedTask => {
-        if (this.selectedTask()?.id === updatedTask.id)
-          this.selectedTask.set(updatedTask);
+      next: () => {
+        const now = new Date().toISOString();
+
+        if (this.selectedTask()?.id === task.id) {
+          this.selectedTask.update(selectedTask =>
+            selectedTask ? {
+              ...task,
+              isCompleted,
+              completedAtUtc: isCompleted ? now : null,
+              updatedAtUtc: now
+            } : null
+          );
+        }
 
         this.reloadTasks();
       },

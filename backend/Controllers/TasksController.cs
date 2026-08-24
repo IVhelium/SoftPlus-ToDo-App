@@ -93,7 +93,7 @@ namespace SoftPlus_ToDo.Controllers
         }
 
         [HttpPatch("update/status/{taskId:guid}")]
-        public async Task<ActionResult<TaskResponseDto>> ChangeStatus(
+        public async Task<IActionResult> ChangeStatus(
             Guid taskId,
             [FromBody] ChangeTaskStatusRequestDto request,
             CancellationToken cancellationToken
@@ -108,9 +108,9 @@ namespace SoftPlus_ToDo.Controllers
                 cancellationToken
             );
 
-            if (task is null) return NotFound(new { message = "Task not found" });
+            if (!task) return NotFound(new { message = "Task not found" });
 
-            return Ok(task);
+            return NoContent();
         }
 
         [HttpDelete("delete/{taskId:guid}")]

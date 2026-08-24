@@ -30,7 +30,7 @@ namespace SoftPlus_ToDo.Interfaces.Services
             CancellationToken cancellationToken
         );
 
-        Task<TaskResponseDto> ChangeStatusAsync(
+        Task<bool> ChangeStatusAsync(
             Guid userId,
             Guid taskId,
             ChangeTaskStatusRequestDto request,

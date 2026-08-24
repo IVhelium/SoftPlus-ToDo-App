@@ -1,7 +1,7 @@
 <!-- Backdrop -->
 <button 
     type="button"
-    class="fixed inset-0 top-12 z-55 bg-black/20 transition-opacity duration-300 lg:hidden"
+    class="fixed inset-0 top-12 z-55 bg-black/20 transition-opacity duration-300"
     [class.opacity-100]="open()"
     [class.opacity-0]="!open()"
     [class.pointer-events-none]="!open()"
@@ -25,7 +25,7 @@
             >
                 <svg
                     lucideX
-                    class="size-5 transition-transform duration-200 hover:rotate-90"
+                    class="size-5"
                 ></svg>
             </button>
         </div>
@@ -71,7 +71,7 @@
                 </p>
 
                 @if (task()!.description) {
-                    <p class="whitespace-pre-wrap text-sm leading-6 text-gray-700">
+                    <p class="wrap-break-word text-sm leading-6 text-gray-700">
                         {{ task()!.description }}
                     </p>
                 }
@@ -127,6 +127,26 @@
                         }
                         @else {
                             <span class="text-gray-400">No Due Date</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <!-- Completed -->
+            <div class="mt-5 flex items-center gap-3">
+                <svg 
+                    lucideCheckSquare
+                    class="size-5 text-gray-400"
+                ></svg>
+            
+                <div>
+                    <p class="text-xs text-gray-500">Completed</p>
+                    <p class="mt-1 text-sm font-medium">
+                        @if (task()!.completedAtUtc) {
+                            {{ task()!.dueDateUtc | date:'MMM d, y, HH:mm' }}
+                        }
+                        @else {
+                            <span class="text-gray-400">No Completed</span>
                         }
                     </p>
                 </div>

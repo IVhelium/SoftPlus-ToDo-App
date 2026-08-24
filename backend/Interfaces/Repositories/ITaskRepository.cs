@@ -23,7 +23,18 @@ namespace SoftPlus_ToDo.Interfaces.Repositories
             CancellationToken cancellationToken
         );
 
-        void Delete(TaskModel task);
+        Task<bool> ChangeStatusAsync(
+            Guid userId,
+            Guid taskId,
+            bool isCompleted,
+            CancellationToken cancellationToken
+        );
+
+        Task<bool> DeleteAsync(
+            Guid userId,
+            Guid taskId,
+            CancellationToken cancellationToken
+        );
 
         Task SaveChangesAsync(CancellationToken cancellationToken);
     }

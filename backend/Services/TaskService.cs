@@ -130,27 +130,19 @@ namespace SoftPlus_ToDo.Services
             return TaskMapper.MapToResponse(task);
         }
 
-        public async Task<TaskResponseDto> ChangeStatusAsync(
+        public async Task<bool> ChangeStatusAsync(
             Guid userId,
             Guid taskId,
             ChangeTaskStatusRequestDto request,
             CancellationToken cancellationToken
         )
         {
-            var task = await _taskRepository.GetByIdAsync(
+            return await _taskRepository.ChangeStatusAsync(
                 userId,
                 taskId,
+                request.IsCompleted,
                 cancellationToken
-            ) ?? throw new KeyNotFoundException("Task not found");
-
-            task.IsCompleted = request.IsCompleted;
-            task.CompletedAtUtc = request.IsCompleted
-                ? DateTimeOffset.UtcNow : null;
-            task.UpdatedAtUtc = DateTimeOffset.UtcNow;
-
-            await _taskRepository.SaveChangesAsync(cancellationToken);
-
-            return TaskMapper.MapToResponse(task);
+            );
         }
 
         public async Task<bool> DeleteAsync(
@@ -159,18 +151,11 @@ namespace SoftPlus_ToDo.Services
             CancellationToken cancellationToken
         )
         {
-            var task = await _taskRepository.GetByIdAsync(
+            return await _taskRepository.DeleteAsync(
                 userId,
                 taskId,
                 cancellationToken
             );
-
-            if (task is null) return false;
-
-            _taskRepository.Delete(task);
-            await _taskRepository.SaveChangesAsync(cancellationToken);
-
-            return true;
         }
     }
 }
