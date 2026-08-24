@@ -26,10 +26,10 @@
             [class.text-gray-400]="task().isCompleted"
         >{{ task().name }}</p>
 
-        <div class="flex items-center gap-8 text-xs text-gray-500">
+        <div class="grid grid-cols-2 gap-8 text-xs text-gray-500">
             <!-- Category -->
             @if (task().categoryName) {
-                <span class="flex items-center gap-1.5 w-[50%]">
+                <span class="flex items-center gap-1.5">
                     <span
                         class="size-2 rounded-full"
                         [style.backgroundColor]="task().categoryColor ?? '#9ca3af'"
@@ -37,10 +37,13 @@
                     {{ task().categoryName }}
                 </span>
             }
+            @else {
+                <span class="w-[50%]"></span>
+            }
 
             <!-- Due Date -->
             @if (task().dueDateUtc) {
-                <span class="flex items-center gap-1 w-[50%]">
+                <span class="flex items-center gap-1">
                     <svg
                         lucideCalendarDays
                         class="size-3.5"
