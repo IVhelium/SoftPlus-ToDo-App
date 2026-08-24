@@ -143,7 +143,7 @@
                     <p class="text-xs text-gray-500">Completed</p>
                     <p class="mt-1 text-sm font-medium">
                         @if (task()!.completedAtUtc) {
-                            {{ task()!.dueDateUtc | date:'MMM d, y, HH:mm' }}
+                            {{ task()!.completedAtUtc | date:'MMM d, y, HH:mm' }}
                         }
                         @else {
                             <span class="text-gray-400">No Completed</span>
